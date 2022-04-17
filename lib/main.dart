@@ -1,4 +1,4 @@
-import 'package:call_logs/recent_calls/call_info_screen.dart';
+import 'recent_calls/call_info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:call_logs/recent_calls/recent_calls_screen.dart';
 

@@ -9,7 +9,7 @@ class CallInfo extends StatelessWidget {
       body: Container(
         color: Colors.orange[300],
         alignment: Alignment.center,
-        child: const Text("СКОРО БУДЕТ"),
+        child: const Text("Сделала задачу Карачаева Камила"),
       ),
     );
   }
