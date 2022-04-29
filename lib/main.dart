@@ -21,6 +21,5 @@ class MyApp extends StatelessWidget {
         '/': (context) => const RecentCalls(),
         '/info': (context) => const CallInfo(),
       },
-    );
-  }
+    );}
 }
