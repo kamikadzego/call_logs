@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class CallInfo extends StatelessWidget {
   const CallInfo({Key? key}) : super(key: key);
@@ -9,7 +10,17 @@ class CallInfo extends StatelessWidget {
       body: Container(
         color: Colors.orange[300],
         alignment: Alignment.center,
-        child: const Text("Сделала задачу Карачаева Камила"),
+        child: FutureBuilder<http.Response>(
+          future: http.get(Uri.parse('https://catfact.ninja/fact')),
+          builder: (BuildContext context,AsyncSnapshot<http.Response> snapshot){
+            if(snapshot.hasData) {
+              return Text(snapshot.data!.body);
+            } else {
+              return const CircularProgressIndicator();
+            }
+          },
+
+        )
       ),
     );
   }
