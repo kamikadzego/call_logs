@@ -12,7 +12,7 @@ class CallInfo extends StatelessWidget {
         alignment: Alignment.center,
         child: FutureBuilder<http.Response>(
           future: http.get(Uri.parse('https://reqres.in/api/users')),
-          builder: (BuildContext context, AsyncSnapshot<http.Response> snapshot){
+          builder: (context, snapshot){
             if (snapshot.hasData) {
               return Text(snapshot.data!.body);
             } else {

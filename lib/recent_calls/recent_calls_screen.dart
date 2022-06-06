@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 import 'package:call_logs/recent_calls/call_item.dart';
 import 'package:flutter/services.dart';
 
-import '../styles/colors.dart';
+import 'package:call_logs/styles/colors.dart';
 
 class RecentCalls extends StatefulWidget {
   const RecentCalls({Key? key}) : super(key: key);
@@ -17,12 +20,11 @@ class _RecentCallsState extends State<RecentCalls> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
+        backgroundColor: AppColor.appBar,
         title: const Text(
           'Журнал звонков',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: AppColor.primary),
         ),
-        backgroundColor: AppColor.appBar,
-
         systemOverlayStyle: const SystemUiOverlayStyle(
           // Status bar color
           statusBarColor: AppColor.appBar,
@@ -31,11 +33,24 @@ class _RecentCallsState extends State<RecentCalls> {
           statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
           statusBarBrightness: Brightness.light, // For iOS (dark icons)
         ),
-
       ),
-      body: CallCard(date: 'вчера',),
+      body: FutureBuilder<http.Response>(
+          future: http.get(Uri.parse(
+              'https://raw.githubusercontent.com/Gammadov/data/main/calls/call_logs.json')),
+          builder: (context, snapshot) {
+            final decoded = jsonDecode(snapshot.data!.body);
+
+            List<Widget> cards = [];
+            for (int i = 0; i < decoded.length; i++) {
+              final single_map = decoded[i];
+              cards.add(CallCard(
+                call: single_map["person"],
+                additional: single_map["additional"],
+                date: single_map['date'],
+              ));
+            }
+            return ListView(children: cards);
+          }),
     );
   }
 }
-
-
