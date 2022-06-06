@@ -38,10 +38,12 @@ class _RecentCallsState extends State<RecentCalls> {
           future: http.get(Uri.parse(
               'https://raw.githubusercontent.com/Gammadov/data/main/calls/call_logs.json')),
           builder: (context, snapshot) {
-            final decoded = jsonDecode(snapshot.data!.body);
-
-            return ListView.builder(
+            if (snapshot.hasData) {
+              final decoded = jsonDecode(snapshot.data!.body);
+            return ListView.separated(
                 itemCount: decoded.length,
+
+                physics: const BouncingScrollPhysics(),
 
                 itemBuilder: (context, index) {
                   final single_map = decoded[index];
@@ -50,9 +52,16 @@ class _RecentCallsState extends State<RecentCalls> {
                     additional: single_map["additional"],
                     date: single_map['date'],
                   );
-                }
-                );
-          }),
+                },
+              separatorBuilder: (context, index) => const Padding(
+                padding: EdgeInsets.only(left: 42),
+                child: Divider(thickness: 0.5,height: 0.5,color: AppColor.tertiary,),
+              ),
+            );
+            } else {
+              return const Center(child:CircularProgressIndicator());
+            }
+            }),
     );
   }
 }
