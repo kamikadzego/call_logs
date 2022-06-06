@@ -40,16 +40,18 @@ class _RecentCallsState extends State<RecentCalls> {
           builder: (context, snapshot) {
             final decoded = jsonDecode(snapshot.data!.body);
 
-            List<Widget> cards = [];
-            for (int i = 0; i < decoded.length; i++) {
-              final single_map = decoded[i];
-              cards.add(CallCard(
-                call: single_map["person"],
-                additional: single_map["additional"],
-                date: single_map['date'],
-              ));
-            }
-            return ListView(children: cards);
+            return ListView.builder(
+                itemCount: decoded.length,
+
+                itemBuilder: (context, index) {
+                  final single_map = decoded[index];
+                  return CallCard(
+                    call: single_map["person"],
+                    additional: single_map["additional"],
+                    date: single_map['date'],
+                  );
+                }
+                );
           }),
     );
   }
